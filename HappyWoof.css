@@ -27,8 +27,8 @@ body {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(2, 1fr);
-    padding-left: 10vw;
-    padding-right: 10vw;
+    padding-left: 5vw;
+    padding-right: 5vw;
 
     grid-gap: 10px;
 
@@ -41,8 +41,15 @@ body {
 }
 
 .photoSquare {
-    display: flex;
+    display: grid;
+    grid-template-rows: 9fr 1fr;
+
     align-items: center;
     justify-content: center;
 }
 
+.photoInSquare {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
