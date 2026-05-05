@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<meta charset="UTF-8">
+
+<head>
+    <title>
+        HappyWoof
+    </title>
+
+    <p id="mainTitle"> HappyWoof </p>
+
+</head>
+
+<body>
+    <div class="wholeContainer">
+        <div class="photoGrid">
+            
+        </div>
+    </div>
+</body>
+
+</DOCTYPE>

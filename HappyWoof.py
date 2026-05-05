@@ -10,7 +10,7 @@ import torch.nn.functional as F
 device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
 
 print("Welcome to HappyWoof! Let's find out how your furry friend is doing today.")
-print("Please upload an image of your pet to get started:")
+print("Please upload an image of your dog to get started:")
 
 model = models.resnet18(weights=None)
 model.fc = nn.Linear(model.fc.in_features, 4)
@@ -48,4 +48,4 @@ classes = ["angry", "happy", "relaxed", "sad"]
 for i, prob in enumerate(probabilities[0]):
     print(f"{classes[i]}: {prob.item() * 100:.2f}%")
 
-print(f"Your pet seems to be {classes[predicted.item()]}!")
+print(f"Your dog seems to be {classes[predicted.item()]}!")

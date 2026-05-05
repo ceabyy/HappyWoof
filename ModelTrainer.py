@@ -80,5 +80,5 @@ for epoch in range(100):
 
     print(f"Epoch {epoch+1}, Train Loss: {train_loss/len(train_loader):.4f}, Val Loss: {val_loss/len(val_loader):.4f}, Val Accuracy: {val_accuracy:.4f}%")
 
-torch.save(model.state_dict(), "dog_mood_model_100.pth")
+torch.save(model.state_dict(), "dog_mood_model.pth")
 print("Model saved!")

@@ -1,0 +1,5 @@
+.wholeContainer {
+    display: grid;
+    grid-template-rows: auto auto auto;
+    background-color: rgb(233, 232, 224);
+}
