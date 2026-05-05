@@ -1,5 +1,48 @@
+body {
+    justify-content: center;
+    font-family: Helvetica, sans-serif;
+    background-color: rgb(232, 228, 221);
+    align-items: center;
+}
+
+.header {
+    text-align: center;
+    align-items: center;
+}
+
+.footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .wholeContainer {
     display: grid;
-    grid-template-rows: auto auto auto;
-    background-color: rgb(233, 232, 224);
+    grid-template-rows: 0.5fr 0.01fr 2fr 0.5fr;
+    text-align: center;
+    font-family: Helvetica, sans-serif;
 }
+
+.photoGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    padding-left: 10vw;
+    padding-right: 10vw;
+
+    grid-gap: 10px;
+
+    text-align: center;
+}
+
+.photoGrid div {
+    background-color: white;
+    aspect-ratio: 1;
+}
+
+.photoSquare {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
