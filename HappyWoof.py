@@ -7,12 +7,15 @@ from PIL import Image
 from tkinter import Tk, filedialog
 import torch.nn.functional as F
 
+# to communicate with js
+from flask import Flask, jsonify, request, render_template
+app = Flask(__name__)
+
 device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
 
-print("Welcome to HappyWoof! Let's find out how your furry friend is doing today.")
-print("Please upload an image of your dog to get started:")
+classes = ["angry", "happy", "relaxed", "sad"]
 
-model = models.resnet18(weights=None)
+model = models.resnet18(weights=None) # function does the prediction
 model.fc = nn.Linear(model.fc.in_features, 4)
 
 model.load_state_dict(torch.load("./dog_mood_model_100.pth", map_location=device))
@@ -26,26 +29,40 @@ train_transforms = transforms.Compose ([
     transforms.Resize((224,224)),
     transforms.ToTensor(),
     transforms.Normalize([0.485, 0.456, 0.406],
-                         [0.229, 0.224, 0.225])
+                        [0.229, 0.224, 0.225])
 ])
 
-Tk().withdraw()
-file_path = filedialog.askopenfilename()
+@app.route('/')
+def index():
+    return render_template('index.html')
 
-image = Image.open(file_path).convert("RGB")
-image = train_transforms(image).unsqueeze(0).to(device)
+@app.route('/predictDog', methods=['POST']) # for flask
+def predictDog(): #using file from page
 
-with torch.no_grad():
+    """ # since the image is given through html file
+    Tk().withdraw()
+    file_path = filedialog.askopenfilename()
+    """
+    file = request.files['image']
+    image = Image.open(file).convert("RGB")
+    image = train_transforms(image).unsqueeze(0).to(device)
 
-    outputs = model(image)
-    probabilities = F.softmax(outputs, dim=1)
+    with torch.no_grad():
 
-    _, predicted = torch.max(outputs, 1)
+        outputs = model(image)
+        probabilities = F.softmax(outputs, dim=1)
 
+        _, predicted = torch.max(outputs, 1)
 
-classes = ["angry", "happy", "relaxed", "sad"]
+    for i, prob in enumerate(probabilities[0]):
+        print(f"{classes[i]}: {prob.item() * 100:.2f}%")
 
-for i, prob in enumerate(probabilities[0]):
-    print(f"{classes[i]}: {prob.item() * 100:.2f}%")
+    print(f"Your dog seems to be {classes[predicted.item()]}!")
 
-print(f"Your dog seems to be {classes[predicted.item()]}!")
+    result = {classes[i]: round(probabilities[0][i].item() * 100, 2) for i in range(len(classes))}
+    result["prediction"] = classes[predicted.item()]
+
+    return jsonify(result)
+
+if __name__ == "__main__":
+    app.run(debug=True)
