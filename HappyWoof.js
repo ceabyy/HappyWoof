@@ -37,7 +37,7 @@ submitButton.addEventListener('click', async () => {
     const response = await fetch('/predictDog', {
         method: 'POST',
         body: formData
-    })
+    });
 
     const result = await response.json();
     console.log(result);
