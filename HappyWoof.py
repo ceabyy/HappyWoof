@@ -4,7 +4,6 @@ from torchvision import datasets, transforms, models
 from torch.utils.data import random_split
 import torch.nn as nn
 from PIL import Image
-from tkinter import Tk, filedialog
 import torch.nn.functional as F
 
 # to communicate with js
