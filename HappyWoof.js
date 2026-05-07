@@ -9,7 +9,7 @@ const submitButton = document.getElementById("submitButton")
 // variables for where dog photos go in html file - 3 columns, 2 rows, left to right, top to bottom.
 const photo1 = document.getElementById("photo1")
 const photo2 = document.getElementById("photo2")
-const photo3 = document.getElementById("pPhoto3")
+const photo3 = document.getElementById("Photo3")
 const photo4 = document.getElementById("photo4")
 const photo5 = document.getElementById("photo5")
 const photo6 = document.getElementById("photo6")
