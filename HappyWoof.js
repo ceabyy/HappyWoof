@@ -34,7 +34,7 @@ submitButton.addEventListener('click', async () => {
     const formData = new FormData();
     formData.append('image', fileButton.files[0]);
 
-    const response = await fetch('/predictDog', {
+    const response = await fetch(`${BASE_URL}/predictDog`, {
         method: 'POST',
         body: formData
     });
