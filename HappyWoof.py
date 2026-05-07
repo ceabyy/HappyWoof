@@ -8,7 +8,9 @@ import torch.nn.functional as F
 
 # to communicate with js
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 app = Flask(__name__)
+CORS(app)
 
 device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
 
