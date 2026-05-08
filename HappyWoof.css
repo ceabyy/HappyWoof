@@ -42,7 +42,7 @@ body {
 
 .photoSquare {
     display: grid;
-    grid-template-rows: 9fr 1fr;
+    grid-template-rows: 1fr 1fr;
 
     align-items: center;
     justify-content: center;

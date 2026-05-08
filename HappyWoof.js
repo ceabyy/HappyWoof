@@ -14,16 +14,23 @@ const photo4 = document.getElementById("photo4")
 const photo5 = document.getElementById("photo5")
 const photo6 = document.getElementById("photo6")
 
-// titles
+// for handling photos
 
-const dogTitle1 = document.getElementById("dogEmotion1")
+const dogPhotos = [];
+const dogData = [];
+let currentPhotoAmount = 0;
 
 //progress bars
 
-const angry1 = document.getElementById("angry1")
-const happy1 = document.getElementById("happy1")
-const relaxed1 = document.getElementById("relaxed1")
-const sad1 = document.getElementById("sad1")
+const moods = ['angry', 'happy', 'relaxed', 'sad'];
+const bars = {};
+
+for (let i = 1; i <= 6; i++) {
+    bars[i] = {};
+    for (const mood of moods) {
+        bars[i][mood] = document.getElementById(`${mood}${i}`);
+    }
+};
 
 // submitbutton false unless file provided
 fileButton.addEventListener('change', () => {
@@ -41,21 +48,37 @@ submitButton.addEventListener('click', async () => {
 
     const result = await response.json();
     console.log(result);
+    console.log(dogPhotos);
+    console.log(dogData);
 
-    // change photo and progress bars
+    // check if there are 6 photos already
+    if (currentPhotoAmount >= 6) {
+        dogPhotos.pop();
+        dogData.pop();
+        currentPhotoAmount -= 1;
+    };
 
-    photo1.src = URL.createObjectURL(fileButton.files[0]);
-    photo1.style.maxWidth = '300px';
-    photo1.style.maxHeight = '300px';
-    photo1.style.paddingTop = '10px';
-    photo1.style.objectFit = 'contain';
+    dogPhotos.unshift(URL.createObjectURL(fileButton.files[0]));
+    dogData.unshift(result);
 
-    dogTitle1.textContent = `Your dog seems to be ${result.prediction}!`
+    currentPhotoAmount += 1; // increment amount of photos tracked  
+    
+    // adjust all data to reflect the new indices
+    for (let i=0; i<currentPhotoAmount; i++) {
+        const photo = document.getElementById(`photo${i+1}`)
+        photo.src = dogPhotos[i];
 
-    // find a way to make this more efficient
-    angry1.value = result.angry
-    happy1.value = result.happy
-    relaxed1.value = result.relaxed
-    sad1.value = result.sad 
+        photo.style.maxWidth = '300px';
+        photo.style.maxHeight = '300px';
+        photo.style.paddingTop = '10px';
+        photo.style.objectFit = 'contain';
+
+        document.getElementById(`dogEmotion${i+1}`).textContent = `Your dog seems to be ${dogData[i].prediction}!`;
+
+        for (const mood of moods) {
+            document.getElementById(`${mood}${i+1}`).value = dogData[i][mood];
+        };
+
+    };
 });
 
