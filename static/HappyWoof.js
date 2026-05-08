@@ -18,7 +18,7 @@ const dogTitle1 = document.getElementById("dogEmotion1")
 
 const dogPhotos = [];
 const dogData = [];
-currentPhotoAmount = 0;
+let currentPhotoAmount = 0;
 
 //progress bars
 
@@ -30,7 +30,7 @@ for (let i = 1; i <= 6; i++) {
     for (const mood of moods) {
         bars[i][mood] = document.getElementById(`${mood}${i}`);
     }
-}
+};
 
 // submitbutton false unless file provided
 fileButton.addEventListener('change', () => {
@@ -48,27 +48,25 @@ submitButton.addEventListener('click', async () => {
 
     const result = await response.json();
     console.log(result);
+    console.log(dogPhotos);
+    console.log(dogData);
 
-    currentPhotoAmount += 1; // increment amount of photos tracked
-
-    for (let i=1; i<currentPhotoAmount; i++) {
-        // all data in dogData +1 index
-        if (currentPhotoAmount === 6) { // must pop before shifting indices
-            dogPhotos.pop(); // remove last photo
-            dogData.pop(); // remove last data
-        } 
-        
-        dogPhotos[i] = dogPhotos[i+1];
-        dogData[i] = dogData[i+1];
-        
+    // check if there are 6 photos already
+    if (currentPhotoAmount >= 6) {
+        dogPhotos.pop();
+        dogData.pop();
+        currentPhotoAmount -= 1;
     };
 
-        dogPhotos.push(fileButton.files[0]); // add photo to photos array
+    dogPhotos.unshift(URL.createObjectURL(fileButton.files[0]));
+    dogData.unshift(result);
 
+    currentPhotoAmount += 1; // increment amount of photos tracked  
+    
     // adjust all data to reflect the new indices
     for (let i=0; i<currentPhotoAmount; i++) {
         const photo = document.getElementById(`photo${i+1}`)
-        photo.src = URL.createObjectURL(dogPhotos[i]);
+        photo.src = dogPhotos[i];
 
         photo.style.maxWidth = '300px';
         photo.style.maxHeight = '300px';
@@ -79,7 +77,7 @@ submitButton.addEventListener('click', async () => {
 
         for (const mood of moods) {
             document.getElementById(`${mood}${i+1}`).value = dogData[i][mood];
-        }
+        };
 
     };
 });
