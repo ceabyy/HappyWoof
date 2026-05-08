@@ -5,7 +5,7 @@ const submitButton = document.getElementById("submitButton")
 // variables for where dog photos go in html file - 3 columns, 2 rows, left to right, top to bottom.
 const photo1 = document.getElementById("photo1")
 const photo2 = document.getElementById("photo2")
-const photo3 = document.getElementById("pPhoto3")
+const photo3 = document.getElementById("photo3")
 const photo4 = document.getElementById("photo4")
 const photo5 = document.getElementById("photo5")
 const photo6 = document.getElementById("photo6")
@@ -14,12 +14,23 @@ const photo6 = document.getElementById("photo6")
 
 const dogTitle1 = document.getElementById("dogEmotion1")
 
+// for handling photos
+
+const dogPhotos = [];
+const dogData = [];
+currentPhotoAmount = 0;
+
 //progress bars
 
-const angry1 = document.getElementById("angry1")
-const happy1 = document.getElementById("happy1")
-const relaxed1 = document.getElementById("relaxed1")
-const sad1 = document.getElementById("sad1")
+const moods = ['angry', 'happy', 'relaxed', 'sad'];
+const bars = {};
+
+for (let i = 1; i <= 6; i++) {
+    bars[i] = {};
+    for (const mood of moods) {
+        bars[i][mood] = document.getElementById(`${mood}${i}`);
+    }
+}
 
 // submitbutton false unless file provided
 fileButton.addEventListener('change', () => {
@@ -33,25 +44,43 @@ submitButton.addEventListener('click', async () => {
     const response = await fetch('/predictDog', {
         method: 'POST',
         body: formData
-    })
+    });
 
     const result = await response.json();
     console.log(result);
 
-    // change photo and progress bars
+    currentPhotoAmount += 1; // increment amount of photos tracked
 
-    photo1.src = URL.createObjectURL(fileButton.files[0]);
-    photo1.style.maxWidth = '300px';
-    photo1.style.maxHeight = '300px';
-    photo1.style.paddingTop = '10px';
-    photo1.style.objectFit = 'contain';
+    for (let i=1; i<currentPhotoAmount; i++) {
+        // all data in dogData +1 index
+        if (currentPhotoAmount === 6) { // must pop before shifting indices
+            dogPhotos.pop(); // remove last photo
+            dogData.pop(); // remove last data
+        } 
+        
+        dogPhotos[i] = dogPhotos[i+1];
+        dogData[i] = dogData[i+1];
+        
+    };
 
-    dogTitle1.textContent = `Your dog seems to be ${result.prediction}!`
+        dogPhotos.push(fileButton.files[0]); // add photo to photos array
 
-    // find a way to make this more efficient
-    angry1.value = result.angry
-    happy1.value = result.happy
-    relaxed1.value = result.relaxed
-    sad1.value = result.sad 
+    // adjust all data to reflect the new indices
+    for (let i=0; i<currentPhotoAmount; i++) {
+        const photo = document.getElementById(`photo${i+1}`)
+        photo.src = URL.createObjectURL(dogPhotos[i]);
+
+        photo.style.maxWidth = '300px';
+        photo.style.maxHeight = '300px';
+        photo.style.paddingTop = '10px';
+        photo.style.objectFit = 'contain';
+
+        document.getElementById(`dogEmotion${i+1}`).textContent = `Your dog seems to be ${dogData[i].prediction}!`;
+
+        for (const mood of moods) {
+            document.getElementById(`${mood}${i+1}`).value = dogData[i][mood];
+        }
+
+    };
 });
 
