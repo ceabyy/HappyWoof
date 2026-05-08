@@ -1,6 +1,6 @@
 const BASE_URL = window.location.hostname === '127.0.0.1'
     ? 'http://127.0.0.1:5000'
-    : 'https://ceabyy-happywoof.hf.space';
+    : 'https://ceaby-happywoof.hf.space';
 
 // buttons on page
 const fileButton = document.getElementById("fileButton")
