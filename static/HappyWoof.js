@@ -10,10 +10,6 @@ const photo4 = document.getElementById("photo4")
 const photo5 = document.getElementById("photo5")
 const photo6 = document.getElementById("photo6")
 
-// titles
-
-const dogTitle1 = document.getElementById("dogEmotion1")
-
 // for handling photos
 
 const dogPhotos = [];
