@@ -16,11 +16,12 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    padding-top: 2vh;
 }
 
 .wholeContainer {
     display: grid;
-    grid-template-rows: 0.5fr 0.01fr 2fr 0.5fr;
+    grid-template-rows: 0.5fr 0.01fr 2fr 0.1fr;
     text-align: center;
 }
 
