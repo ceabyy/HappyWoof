@@ -19,7 +19,7 @@ classes = ["angry", "happy", "relaxed", "sad"]
 model = models.resnet18(weights=None) # function does the prediction
 model.fc = nn.Linear(model.fc.in_features, 4)
 
-model.load_state_dict(torch.load("./dog_mood_model_100.pth", map_location=device))
+model.load_state_dict(torch.load("./dog_mood_model.pth", map_location=device))
 model = model.to(device)
 model.eval()
 
