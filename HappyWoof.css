@@ -41,7 +41,6 @@ body {
 .photoGrid div {
     background-color: white;
     aspect-ratio: 1;
-    overflow-y: auto;
 }
 
 .photoSquare {
